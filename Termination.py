@@ -43,7 +43,7 @@ def group_users(reports: list) -> None:
 	
 	data_frames = []
 	for report in reports:
-		df = pd.read_excel(report, skiprows=1)
+		df = pd.read_excel(dir_path + report, skiprows=1)
 		data_frames.append(df)
 	
 	merged_column = pd.concat([df.iloc[:, 0] for df in data_frames], ignore_index=True)
@@ -62,7 +62,7 @@ def group_users(reports: list) -> None:
 
 
 if __name__ == '__main__':
-	dir_path = "C:\\Projects\\VFCorp_Termination"
+	dir_path = "C:\\Users\\Dipaditya\\Downloads\\"
 	excel_file = 'group.xlsx'
 	
 	file_paths = [key for key in os.listdir(dir_path) if key.__contains__('VF')]
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 		wb = Workbook()
 		ws = create_excel_sheet()
 		group_users(file_paths)
-		wb.save(excel_file)
+		wb.save(dir_path + excel_file)
 	else:
 		print('[INFO] No termination report found.')
 
