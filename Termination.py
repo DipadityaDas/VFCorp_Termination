@@ -8,15 +8,17 @@ from openpyxl.styles import Alignment, Font, PatternFill
 def create_excel_sheet() -> Worksheet:
 	worksheet = wb.create_sheet('User Login IDs')
 	del wb[wb.sheetnames[0]]
-	worksheet['A1'] = 'USER_LOGIN_ID'
+	worksheet['A1'] = 'User Name'
+	worksheet['B1'] = 'User ID'
+	worksheet['C1'] = 'Email'
 	return worksheet
 
 
 def cell_style(sheet: Worksheet) -> None:
 	color = 'FFFF00'  # Yellow color
 	
-	for cell in sheet[1]:
-		cell.fill = PatternFill(start_color=color, end_color=color, fill_type='solid')
+	# for cell in sheet[1]:
+	# 	cell.fill = PatternFill(start_color=color, end_color=color, fill_type='solid')
 	
 	for row in sheet.iter_rows():
 		for cell in row:
@@ -28,7 +30,7 @@ def cell_style(sheet: Worksheet) -> None:
 		adjusted_width = (max_length + 2) * 1.2
 		sheet.column_dimensions[column[0].column_letter].width = adjusted_width
 	
-	sheet.freeze_panes = 'A2'
+	# sheet.freeze_panes = 'A2'
 	sheet.sheet_view.zoomScale = 180
 
 
@@ -53,7 +55,7 @@ def group_users(reports: list) -> None:
 	print("[INFO] Deleted all duplicate User Login IDs and sorted the IDs.")
 	
 	for idx, data in enumerate(sorted_unique_column, start=2):
-		ws.cell(row=idx, column=1).value = data
+		ws.cell(row=idx, column=2).value = data
 	
 	cell_style(ws)
 	
@@ -61,12 +63,18 @@ def group_users(reports: list) -> None:
 	print("[INFO] Successfully created the group.xlsx file.")
 
 
+def convert_excel_to_csv():
+	df = pd.read_excel(dir_path + excel_file)
+	df.to_csv(dir_path + csv_file, index=False)
+	print(f"[INFO] Conversion complete. Data saved to {csv_file}.")
+
+
 if __name__ == '__main__':
 	dir_path = "C:\\Users\\Dipaditya\\Downloads\\"
 	excel_file = 'group.xlsx'
+	csv_file = "Terminate_Users.csv"
 	
 	file_paths = [key for key in os.listdir(dir_path) if key.__contains__('VF')]
-	# file_paths = []
 	
 	print("=" * 70)
 	print("Generating Log....")
@@ -77,6 +85,8 @@ if __name__ == '__main__':
 		ws = create_excel_sheet()
 		group_users(file_paths)
 		wb.save(dir_path + excel_file)
+		convert_excel_to_csv()
+		os.remove(dir_path + excel_file)
 	else:
 		print('[INFO] No termination report found.')
 
