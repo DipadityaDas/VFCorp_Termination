@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from openpyxl.workbook import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
-from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.styles import Alignment, Font
 
 
 def create_excel_sheet() -> Worksheet:
@@ -15,10 +15,6 @@ def create_excel_sheet() -> Worksheet:
 
 
 def cell_style(sheet: Worksheet) -> None:
-	color = 'FFFF00'  # Yellow color
-	
-	# for cell in sheet[1]:
-	# 	cell.fill = PatternFill(start_color=color, end_color=color, fill_type='solid')
 	
 	for row in sheet.iter_rows():
 		for cell in row:
@@ -30,7 +26,6 @@ def cell_style(sheet: Worksheet) -> None:
 		adjusted_width = (max_length + 2) * 1.2
 		sheet.column_dimensions[column[0].column_letter].width = adjusted_width
 	
-	# sheet.freeze_panes = 'A2'
 	sheet.sheet_view.zoomScale = 180
 
 
