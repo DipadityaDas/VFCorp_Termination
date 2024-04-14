@@ -43,7 +43,7 @@ def group_users(reports: list) -> None:
 		df = pd.read_excel(dir_path + report, skiprows=1)
 		data_frames.append(df)
 
-	merged_column = pd.concat([df.iloc[:, 0] for df in data_frames], ignore_index=True)
+	merged_column = pd.concat([df.iloc[:, 1] for df in data_frames], ignore_index=True)
 	print("[INFO] Merged all the User Login IDs.")
 
 	sorted_unique_column = sorted(merged_column.unique())
